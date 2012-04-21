@@ -121,6 +121,7 @@ void setup()
 
 void loop()
 {
+
 	while(nss_gps.available())
 	{
 		if(gps.encode(nss_gps.read()))
@@ -140,10 +141,12 @@ void loop()
 			break;
 		}
 	}
+
 }
 
 void printCoordinates()
 {
+
 	float flatitude, flongitude;
 	long latitude, longitude;
 	String latDir, lonDir;
