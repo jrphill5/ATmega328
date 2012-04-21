@@ -248,7 +248,7 @@ bool feedgps()
     while (nss.available())
         if (gps.encode(nss.read()))
             return true;
-    	else return false;
+        else return false;
 
 }
 
