@@ -74,13 +74,17 @@ void setup()
 
     if (SD.begin(CHIPSELECT))
     {
+
         logfile = SD.open("log.txt", FILE_WRITE);
         if (logfile)
         {
+
             SDvalid = true;
             logfile.println("==============INITIALIZED==============");
             logfile.println("date,time,latitude,longitude,elevation");
+
         }
+
     }
 
     if (SDvalid) lcd.print("OK");
