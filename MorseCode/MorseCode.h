@@ -1,0 +1,42 @@
+const int DOT  = 1;
+const int DASH = 3;
+
+const int MORSE_A[] = { DOT, DASH };
+const int MORSE_B[] = { DASH, DOT, DOT, DOT };
+const int MORSE_C[] = { DASH, DOT, DASH, DOT };
+const int MORSE_D[] = { DASH, DOT, DOT };
+const int MORSE_E[] = { DOT };
+const int MORSE_F[] = { DOT, DOT, DASH, DOT };
+const int MORSE_G[] = { DASH, DASH, DOT };
+const int MORSE_H[] = { DOT, DOT, DOT, DOT };
+const int MORSE_I[] = { DOT, DOT };
+const int MORSE_J[] = { DASH, DASH, DASH };
+const int MORSE_K[] = { DASH, DOT, DASH };
+const int MORSE_L[] = { DOT, DASH, DOT, DOT };
+const int MORSE_M[] = { DASH, DASH };
+const int MORSE_N[] = { DASH, DOT };
+const int MORSE_O[] = { DASH, DASH, DASH };
+const int MORSE_P[] = { DOT, DASH, DASH, DOT };
+const int MORSE_Q[] = { DASH, DASH, DOT, DASH };
+const int MORSE_R[] = { DOT, DASH, DOT };
+const int MORSE_S[] = { DOT, DOT, DOT };
+const int MORSE_T[] = { DASH };
+const int MORSE_U[] = { DOT, DOT, DASH };
+const int MORSE_V[] = { DOT, DOT, DOT, DASH };
+const int MORSE_W[] = { DOT, DASH, DASH };
+const int MORSE_X[] = { DASH, DOT, DOT, DASH };
+const int MORSE_Y[] = { DASH, DOT, DASH, DASH };
+const int MORSE_Z[] = { DASH, DASH, DOT, DOT };
+
+const int MORSE_0[] = { DASH, DASH, DASH, DASH, DASH };
+const int MORSE_1[] = { DOT, DASH, DASH, DASH, DASH };
+const int MORSE_2[] = { DOT, DOT, DASH, DASH, DASH };
+const int MORSE_3[] = { DOT, DOT, DOT, DASH, DASH };
+const int MORSE_4[] = { DOT, DOT, DOT, DOT, DASH };
+const int MORSE_5[] = { DOT, DOT, DOT, DOT, DOT };
+const int MORSE_6[] = { DASH, DOT, DOT, DOT, DOT };
+const int MORSE_7[] = { DASH, DASH, DOT, DOT, DOT };
+const int MORSE_8[] = { DASH, DASH, DASH, DOT, DOT };
+const int MORSE_9[] = { DASH, DASH, DASH, DASH, DOT };
+
+const int MORSE_STOP[] = { DOT, DASH, DOT, DASH, DOT, DASH };
