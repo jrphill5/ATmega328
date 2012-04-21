@@ -212,9 +212,9 @@ void printDateTime()
 
     gps.crack_datetime(&year,&month,&day,&hour,&minute,&second,&hundredths);
 
-    smonth    = (unsigned short)month;
-    sday        = (unsigned short)day;
-    shour     =     (signed short)hour;
+    smonth  = (unsigned short)month;
+    sday    = (unsigned short)day;
+    shour   = (signed short)hour;
     sminute = (unsigned short)minute;
     ssecond = (unsigned short)second;
 
@@ -355,23 +355,23 @@ void printHeading()
         lcd.print(gps_heading);
         if (gps_heading < 100) lcd.print(" ");
         if (gps_heading < 10) lcd.print(" ");
-        /*     if (gps_heading >=     0.00 && gps_heading <    11.25) lcd.print("    N ");
-        else if (gps_heading >=    11.25 && gps_heading <    33.75) lcd.print(" NNE");
-        else if (gps_heading >=    33.75 && gps_heading <    56.25) lcd.print("    NE");
-        else if (gps_heading >=    56.25 && gps_heading <    78.75) lcd.print(" ENE");
-        else if (gps_heading >=    78.75 && gps_heading < 101.25) lcd.print("     E");
+        /*   if (gps_heading >=   0.00 && gps_heading <  11.25) lcd.print("  N ");
+        else if (gps_heading >=  11.25 && gps_heading <  33.75) lcd.print(" NNE");
+        else if (gps_heading >=  33.75 && gps_heading <  56.25) lcd.print("  NE");
+        else if (gps_heading >=  56.25 && gps_heading <  78.75) lcd.print(" ENE");
+        else if (gps_heading >=  78.75 && gps_heading < 101.25) lcd.print("   E");
         else if (gps_heading >= 101.25 && gps_heading < 123.75) lcd.print(" ESE");
-        else if (gps_heading >= 123.75 && gps_heading < 146.25) lcd.print("    SE");
+        else if (gps_heading >= 123.75 && gps_heading < 146.25) lcd.print("  SE");
         else if (gps_heading >= 146.25 && gps_heading < 168.75) lcd.print(" SSE");
-        else if (gps_heading >= 168.75 && gps_heading < 191.25) lcd.print("    S ");
+        else if (gps_heading >= 168.75 && gps_heading < 191.25) lcd.print("  S ");
         else if (gps_heading >= 191.25 && gps_heading < 213.75) lcd.print(" SSW");
-        else if (gps_heading >= 213.75 && gps_heading < 236.25) lcd.print("    SW");
+        else if (gps_heading >= 213.75 && gps_heading < 236.25) lcd.print("  SW");
         else if (gps_heading >= 236.25 && gps_heading < 258.75) lcd.print(" WSW");
-        else if (gps_heading >= 258.75 && gps_heading < 281.25) lcd.print("     W");
+        else if (gps_heading >= 258.75 && gps_heading < 281.25) lcd.print("   W");
         else if (gps_heading >= 281.25 && gps_heading < 303.75) lcd.print(" WNW");
-        else if (gps_heading >= 303.75 && gps_heading < 326.25) lcd.print("    NW");
+        else if (gps_heading >= 303.75 && gps_heading < 326.25) lcd.print("  NW");
         else if (gps_heading >= 326.25 && gps_heading < 348.75) lcd.print(" NNW");
-        else if (gps_heading >= 348.75 && gps_heading <=360.00) lcd.print("    N ");
+        else if (gps_heading >= 348.75 && gps_heading <=360.00) lcd.print("  N ");
         else lcd.print(" -- ");*/
         lcd.print("        ");
     }
