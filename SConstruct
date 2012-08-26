@@ -65,7 +65,7 @@ elif platform == 'win32':
     SKETCHBOOK_HOME_DEFAULT = ''
 else:
     # For Ubuntu Linux (9.10 or higher)
-    ARDUINO_HOME_DEFAULT = '/usr/share/arduino/' #'/home/YOU/apps/arduino-00XX/'
+    ARDUINO_HOME_DEFAULT = '/usr/share/arduino-1.0/' #'/home/YOU/apps/arduino-00XX/'
     ARDUINO_PORT_DEFAULT = getUsbTty('/dev/ttyUSB*')
     AVR_BIN_PREFIX = 'avr-'
     SKETCHBOOK_HOME_DEFAULT = os.path.realpath('~/share/arduino/sketchbook/')
@@ -77,7 +77,7 @@ ARDUINO_PORT    = ARGUMENTS.get('ARDUINO_PORT', ARDUINO_PORT_DEFAULT)
 ARDUINO_BOARD   = ARGUMENTS.get('ARDUINO_BOARD', ARDUINO_BOARD_DEFAULT)
 ARDUINO_VER     = ARGUMENTS.get('ARDUINO_VER', 0) # Default to 0 if nothing is specified
 RST_TRIGGER     = ARGUMENTS.get('RST_TRIGGER', None) # use built-in pulseDTR() by default
-EXTRA_LIB       = ARGUMENTS.get('EXTRA_LIB', None) # handy for adding another arduino-lib dir
+EXTRA_LIB       = ARGUMENTS.get('EXTRA_LIB', 'includes') # handy for adding another arduino-lib dir
 SKETCHBOOK_HOME = ARGUMENTS.get('SKETCHBOOK_HOME', SKETCHBOOK_HOME_DEFAULT) # If set will add the libraries dir from the sketchbook
 
 if not ARDUINO_HOME:
