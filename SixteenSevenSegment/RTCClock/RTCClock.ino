@@ -1,99 +1,123 @@
-#include "SPI.h"
+#include "Wire.h"
+#include "Time.h"
+#include "TM1638.h"
+#include "TM1640.h"
 
-#define RTCCS 7
+#define RTC_CTRL_ID B1101000
+TM1640 module(5, 6);
 
-#define RTC_SECOND	0x00
-#define RTC_MINUTE	0x01
-#define RTC_HOUR	0x02
-#define RTC_DAY		0x03
-#define RTC_DATE	0x04
-#define RTC_MONTH	0x05
-#define RTC_YEAR	0x06
+char display[17] = {0};
+char datetime[17] = {0};
+int rtc[7] = { 0, 0, 0, 0, 0, 0, 0 };
+unsigned int points = 0b0001010000101010;
 
-void RTC_write(byte address, byte data);
-byte RTC_read(byte address);
+char DECtoBCD( char value )
+{
+
+    return ( value / 10 << 4 ) + value % 10;
+
+}
+
+char BCDtoDEC( char value )
+{
+
+    return (( value & 0xF0 ) >> 4 ) * 10 + ( value & 0x0F );
+
+}
+
+void writeRTC()
+{
+
+	Wire.beginTransmission( RTC_CTRL_ID );
+	Wire.write( (uint8_t)0x00 );
+	for( int i = 0; i < 7; i++ )
+		Wire.write( DECtoBCD( rtc[i] ) );
+	Wire.endTransmission();
+
+}
+
+void readRTC()
+{
+
+	Wire.beginTransmission( RTC_CTRL_ID );
+	Wire.write( (uint8_t)0x00 );
+	Wire.endTransmission();
+
+	Wire.requestFrom( RTC_CTRL_ID, 7 );
+	for( int i = 0; i < 7; i++ )
+		if( Wire.available() )
+			rtc[i] = BCDtoDEC( Wire.read() );
+
+}
+
+void printRTC()
+{
+
+	sprintf( datetime, "%02d/%02d/%02d %02d:%02d:%02d", rtc[5], rtc[4], rtc[6], rtc[2], rtc[1], rtc[0] );
+
+	Serial.println( datetime );
+
+}
 
 void setup()
 {
 
-	Serial.begin(9600);
+	Wire.begin();
+	Serial.begin( 115200 );
 
-	pinMode(RTCCS, OUTPUT);
+	Wire.beginTransmission(RTC_CTRL_ID);
+	Wire.write(0x0E);
+	Wire.write(0x00);
+	Wire.endTransmission();
 
-	SPI.begin();
-	SPI.setDataMode(SPI_MODE1);
-	SPI.setBitOrder(MSBFIRST);
-	digitalWrite(RTCCS, LOW);
+	char bytes = 0;
+	while( bytes < 17 )
+		if( Serial.available() > 0)
+		{
 
-	RTC_write(0x8F,0x07);
+			char value = Serial.read();
+			if( value == 127 )
+			{
 
-	char year, month, date, hour, minute, second;
+				if( bytes > 0 )
+				{
 
-	Serial.println("Send time data now...");
+					bytes--;
+					Serial.print((char)8);
+					Serial.print(" ");
+					Serial.print((char)8);
 
-	while( Serial.available() < 6 );
+				}
 
-	if( Serial.available() >= 6 )
-	{
+				continue;
 
-		year   = Serial.read();
-		month  = Serial.read();
-		date   = Serial.read();
-		hour   = Serial.read();
-		minute = Serial.read();
-		second = Serial.read();
+			}
 
-	}
+			datetime[bytes] = value;
+			Serial.print(value);
+			bytes++;
 
-	RTC_write(RTC_YEAR, year);
-	RTC_write(RTC_MONTH, month);
-	RTC_write(RTC_DATE, date);
-	RTC_write(RTC_HOUR, hour);
-	RTC_write(RTC_MINUTE, minute);
-	RTC_write(RTC_SECOND, second);
+		}
 
-	Serial.println("RTC Setup Complete!");
+	sscanf(datetime, "%2d %2d %2d %2d %2d %2d", &rtc[6], &rtc[5], &rtc[4], &rtc[2], &rtc[1], &rtc[0]);
+
+	writeRTC();
+
+}
+
+void onTick()
+{
 
 }
 
 void loop()
 {
 
-	byte year   = RTC_read(RTC_YEAR);
-	byte month  = RTC_read(RTC_MONTH);
-	byte date   = RTC_read(RTC_DATE);
-	byte day    = RTC_read(RTC_DAY);
-	byte hour   = RTC_read(RTC_HOUR);
-	byte minute = RTC_read(RTC_MINUTE);
-	byte second = RTC_read(RTC_SECOND);
+	readRTC();
+	setTime(rtc[2], rtc[1], rtc[0], rtc[4], rtc[5], rtc[6]);
+    set_1Hz_ref(now(), 2, onTick, FALLING);
 
-	char buffer[20];
-	snprintf(buffer, sizeof(buffer), "20%02X-%02X-%02X %02X:%02X:%02X", year, month, date, hour, minute, second);
-	Serial.println(buffer);
-
-	delay(500);
-
-}
-
-// First bit of address byte is 1 when writing.
-void RTC_write(byte address, byte data)
-{
-
-	digitalWrite(RTCCS, HIGH);
-	SPI.transfer(address |= 0x80);
-	SPI.transfer(data);
-	digitalWrite(RTCCS, LOW);
-
-}
-
-// First bit of address byte is 0 when reading.
-byte RTC_read(byte address)
-{
-
-	digitalWrite(RTCCS, HIGH);
-	SPI.transfer(address &= 0x7F);
-	byte data = SPI.transfer(0x00);
-	digitalWrite(RTCCS, LOW);
-	return data;
+	sprintf( display, "%02d%02d%02d%02d %02d%02d%02d%01d", 20, rtc[6], rtc[5], rtc[4], rtc[2], rtc[1], rtc[0], millisecond()/100 );
+	module.setDisplayToString(display, points);
 
 }
