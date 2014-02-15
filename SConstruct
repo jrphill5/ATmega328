@@ -91,7 +91,7 @@ else:
     ARDUINO_HOME        = resolve_var('ARDUINO_HOME', '/usr/share/arduino/')
     ARDUINO_PORT        = resolve_var('ARDUINO_PORT', getUsbTty('/dev/ttyACM*'))
     SKETCHBOOK_HOME     = resolve_var('SKETCHBOOK_HOME',
-                                      path.expanduser('~/share/arduino/sketchbook/'))
+                                      path.expanduser('~/sketchbook/'))
     AVR_HOME            = resolve_var('AVR_HOME', '')
 
 
