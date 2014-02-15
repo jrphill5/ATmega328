@@ -44,8 +44,6 @@ void loop()
   if( digitalRead(IRQ) == HIGH )
   {
     
-    Serial.println();
-    
     delay(2);
     
     unsigned long time = millis()/1000;
@@ -56,31 +54,30 @@ void loop()
       case 0x00:
         Serial.print("Distance has changed! [");
         Serial.print(time);
-        Serial.println("]");
+        Serial.print("s] [");
         stormDistance();
         break;
       case INT_NH:
         Serial.print("Noise level too high! [");
         Serial.print(time);
-        Serial.println("]");
+        Serial.print("s] [");
         break;
       case INT_D:
         Serial.print("Disturber detected! [");
         Serial.print(time);
-        Serial.println("]");
+        Serial.print("s] [");
         strikeEnergy();
         break;
       case INT_L:
         Serial.print("Lightning strike detected! [");
         Serial.print(time);
-        Serial.println("]");
-        stormDistance();
+        Serial.print("s] [");
         strikeEnergy();
         break;
       default:
         Serial.print("Invalid interrupt code! [");
         Serial.print(time);
-        Serial.println("]");
+        Serial.println("s]");
         break;
         
     }
@@ -95,12 +92,11 @@ void stormDistance()
   byte distance = (readRegister(0x07) & 0x3F);
   
   if( distance == 0x3F )
-    Serial.println("Storm out of range.");
+    Serial.println("Out of range.]");
   else
   {
-    Serial.print("Distance: ");
     Serial.print(distance);
-    Serial.println("km");
+    Serial.println("km]");
   }
 
 }
@@ -114,8 +110,8 @@ void strikeEnergy()
   energy << 8;
   energy |= readRegister(0x04);
 
-  Serial.print("Energy: ");
-  Serial.println(energy);
+  Serial.print(energy);
+  Serial.println("]");
   
 }
 
