@@ -10,6 +10,7 @@ char display[17] = {0};
 char datetime[17] = {0};
 int rtc[7] = { 0, 0, 0, 0, 0, 0, 0 };
 unsigned int points = 0b0001010000101010;
+char setTimeFlag = 0;
 
 char DECtoBCD( char value )
 {
@@ -59,19 +60,25 @@ void printRTC()
 
 }
 
-void setup()
+void serialReadTimeISR()
 {
 
-	Wire.begin();
-	Serial.begin( 115200 );
+	setTimeFlag = ( setTimeFlag ) ? 0 : 1;
 
-	Wire.beginTransmission(RTC_CTRL_ID);
-	Wire.write(0x0E);
-	Wire.write(0x00);
-	Wire.endTransmission();
+}
+
+void serialReadTime()
+{
+
+	sprintf( display, "%16s", "  SEND  SERIAL  ");
+	module.setDisplayToString(display, 0x00);
 
 	char bytes = 0;
 	while( bytes < 17 )
+	{
+
+		if( setTimeFlag == 0 ) return;
+
 		if( Serial.available() > 0)
 		{
 
@@ -99,9 +106,29 @@ void setup()
 
 		}
 
+	}
+
 	sscanf(datetime, "%2d %2d %2d %2d %2d %2d", &rtc[6], &rtc[5], &rtc[4], &rtc[2], &rtc[1], &rtc[0]);
 
 	writeRTC();
+
+	setTimeFlag = false;
+
+}
+
+void setup()
+{
+
+	Wire.begin();
+	Wire.beginTransmission(RTC_CTRL_ID);
+	Wire.write(0x0E);
+	Wire.write(0x00);
+	Wire.endTransmission();
+
+	attachInterrupt(1, serialReadTimeISR, FALLING);
+
+	Serial.begin(9600);
+	//serialReadTime();
 
 }
 
@@ -112,6 +139,8 @@ void onTick()
 
 void loop()
 {
+
+	if( setTimeFlag ) serialReadTime();
 
 	readRTC();
 	setTime(rtc[2], rtc[1], rtc[0], rtc[4], rtc[5], rtc[6]);
