@@ -1,5 +1,5 @@
 unsigned short max = 3000;
-unsigned short set = 250;
+unsigned short set = 300;
 unsigned short val = 0;
 
 #define ALARM_PIN 10
@@ -26,7 +26,7 @@ void loop()
 		val = analogRead(ALARM_PIN);
 	}
 	noTone(ALARM_PIN);
-	Serial.print(val);
+	Serial.println(val);
 	delay(1000);
 
 }
